@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 import { Character } from './entities/character.entity';
+import { get } from 'http';
+import { GetCharacterDto } from './dto/get-character.dto';
 
 @Injectable()
 export class CharacterService {
@@ -23,9 +25,22 @@ export class CharacterService {
     }
   }
 
-  async findAll() {
-    const characters = await this.characterModel.find();
-    return characters;
+  async findAll(getCharacterDto: GetCharacterDto) {
+    const { quantity } = getCharacterDto
+    try {
+      //Si se envia el parametro quantity trae la cantidad de personajes de forma
+      if(quantity){
+        const characters = await this.characterModel.aggregate([
+          { $sample: { size: quantity } }
+      ]);
+        return characters
+      }
+      const characters = await this.characterModel.find();
+      return characters;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   findOne(id: number) {

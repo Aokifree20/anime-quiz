@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UsePipes, Query } from '@nestjs/common';
 import { CharacterService } from './character.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
+import { get } from 'http';
+import { GetCharacterDto } from './dto/get-character.dto';
 
 
 @Controller('character')
@@ -15,8 +17,8 @@ export class CharacterController {
   }
 
   @Get()
-  findAll() {
-    return this.characterService.findAll();
+  findAll(@Query() getCharacterDto: GetCharacterDto) {
+    return this.characterService.findAll(getCharacterDto);
   }
 
   @Get(':id')
