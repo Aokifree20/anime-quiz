@@ -7,8 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import { CharacterModule } from './character/character.module';
 dotenv.config();
 @Module({
-  imports: [ MongooseModule.forRoot('mongodb://127.0.0.1:27017/mongodb'), CharacterModule,
-    ],
+  imports: [
+    MongooseModule.forRoot(process.env.MONGODB_URL),
+    CharacterModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
