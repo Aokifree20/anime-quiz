@@ -4,6 +4,7 @@ import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { get } from 'http';
 import { GetCharacterDto } from './dto/get-character.dto';
+import { ApiHeader } from '@nestjs/swagger';
 
 
 @Controller('character')
@@ -11,11 +12,13 @@ export class CharacterController {
   constructor(private readonly characterService: CharacterService) {}
 
   @Post()
-  @UsePipes(ValidationPipe)
+  // @UsePipes(ValidationPipe)
   create(@Body() createCharacterDto: CreateCharacterDto) {
     return this.characterService.create(createCharacterDto);
   }
-
+  
+  @Get()
+  // @ApiHeader({ name: 'api-key' })
   @Get()
   findAll(@Query() getCharacterDto: GetCharacterDto) {
     return this.characterService.findAll(getCharacterDto);
